@@ -1,8 +1,5 @@
 # RailsTimeseries
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rails_timeseries`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+RailsTimeseries is a gem that generates time series data and store in the database. You can select data by defining scope and the data collected will be used for statistics, drawing a chart
 
 ## Installation
 
@@ -20,9 +17,42 @@ Or install it yourself as:
 
     $ gem install rails_timeseries
 
-## Usage
+And to install templates:
 
-TODO: Write usage instructions here
+    $ rails g rails_timeseries:install
+
+And db migation:
+
+    $ rails db:migrate
+
+
+## Usage
+### Define a scope
+```ruby
+class User < ApplicationRecord
+  include RailsTimeseries
+  timeseries_scope :active_users do
+    where("current_sign_in_at > ?", 1.days.ago)
+  end
+end
+```
+and you can collect number of active_users in every day or every hours
+
+### Set time frame
+RailsTimeseries uses [whenever](https://github.com/javan/whenever) gem to run data collect job. you can change time frame by modifying `config/schedule.rb` file that is generated during installation.
+```ruby
+# it collects data in every 5AM
+every :day, at: '5:00am' do
+  runner "Timeseries.generate"
+end
+```
+
+### Retrive datas
+``` ruby
+Timeseries.data(:active_users)
+#this will return number of active_users with date
+```
+
 
 ## Development
 

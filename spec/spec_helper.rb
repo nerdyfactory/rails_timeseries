@@ -1,5 +1,12 @@
 require "bundler/setup"
 require "rails_timeseries"
+require 'rspec/active_model/mocks'
+require "pry"
+require 'active_record'
+require 'active_record/version'
+require 'active_record/base'
+require 'active_support'
+require 'active_support/core_ext'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
