@@ -2,7 +2,7 @@ require "rails_timeseries/version"
 require "rails"
 
 module RailsTimeseries
-  extend ActiveSupport::Concern
+  extend ::ActiveSupport::Concern
   included do
     cattr_accessor :timeseries_scopes
   end
