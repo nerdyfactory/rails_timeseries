@@ -11,8 +11,12 @@ class Timeseries < ActiveRecord::Base
     return
   end
 
-  def self.data(scope)
-    data = where(scope: scope).order(:date).pluck(:date, :count)
+  def self.data(scope, options = {})
+    options.symbolize_keys!
+    data = where(scope: scope)
+    data = data.where('date > ?', options[:start_date]) if options[:start_date]
+    data = data.where('date < ?', options[:end_date]) if options[:end_date]
+    data = data.order(:date).pluck(:date, :count)
     Hash[data]
   end
 end
